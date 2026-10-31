@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import {
   Fraunces,
   Nunito_Sans,
@@ -79,9 +79,35 @@ const lora = Lora({
 export const metadata: Metadata = {
   title: 'AFTERGLOW — A Little Place for the Moments that Matter',
   description: 'A personal visual diary and vintage scrapbook sanctuary for your cherished memories.',
+  applicationName: 'AFTERGLOW',
+  manifest: '/manifest.webmanifest',
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/icons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'AFTERGLOW',
+  },
+  formatDetection: {
+    telephone: false,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#FAF7F0',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({
@@ -194,6 +220,9 @@ export default function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+        <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body className="antialiased min-h-screen bg-[var(--ag-bg)] text-[var(--ag-text-primary)]">
         {children}

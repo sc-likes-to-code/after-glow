@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 64" width="280" height="64">
+  <defs>
+    <linearGradient id="cSky" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E9E0F2" />
+      <stop offset="50%" stop-color="#F5D7DC" />
+      <stop offset="100%" stop-color="#FAF1D2" />
+    </linearGradient>
+    <filter id="cShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#55483F" flood-opacity="0.12" />
+    </filter>
+  </defs>
+
+  <!-- Left Keepsake Icon (48x48) -->
+  <g transform="translate(4, 8)">
+    <g transform="rotate(-3, 24, 24)" filter="url(#cShadow)">
+      <!-- Polaroid miniature frame -->
+      <rect x="2" y="2" width="44" height="46" rx="4" fill="#FFFFFF" stroke="#E8DFD1" stroke-width="1.2" />
+      <!-- Photo area -->
+      <rect x="5" y="5" width="38" height="32" rx="2" fill="url(#cSky)" />
+      <!-- Tiny Daisy -->
+      <circle cx="24" cy="20" r="12" fill="#FFEAA7" opacity="0.4" />
+      <circle cx="24" cy="20" r="4" fill="#F7BA4A" />
+      <circle cx="24" cy="13" r="2.8" fill="#FFFFFF" />
+      <circle cx="31" cy="20" r="2.8" fill="#FFFFFF" />
+      <circle cx="24" cy="27" r="2.8" fill="#FFFFFF" />
+      <circle cx="17" cy="20" r="2.8" fill="#FFFFFF" />
+      <!-- Sparkle -->
+      <path d="M 36 10 Q 36 13 39 13 Q 36 13 36 16 Q 36 13 33 13 Q 36 13 36 10 Z" fill="#F6BE46" />
+      <!-- Heart on chin -->
+      <path d="M 24 43 C 22.5 41 18.5 42 18.5 44 C 18.5 46 24 48 24 48 C 24 48 29.5 46 29.5 44 C 29.5 42 25.5 41 24 43 Z" fill="#D9AEB5" />
+    </g>
+  </g>
+
+  <!-- Right Typography Wordmark -->
+  <text x="64" y="34" font-family="'Fraunces', Georgia, serif" font-size="22" font-weight="700" letter-spacing="1.5" fill="#55483F">AFTERGLOW</text>
+  <text x="65" y="49" font-family="'Caveat', cursive" font-size="13" font-weight="500" fill="#998A7F" letter-spacing="0.2">moments that matter ♡</text>
+</svg>

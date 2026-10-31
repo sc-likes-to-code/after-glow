@@ -8,6 +8,8 @@ import { WashiTape, TinyFlower, TinySparkle } from '@/components/scrapbook/Decor
 import { FlowerIllustration } from '@/components/scrapbook/FlowerIllustration';
 import { ConfirmDialog } from '@/components/scrapbook/ConfirmDialog';
 import { ThemeStudio } from '@/components/theme/ThemeStudio';
+import { AfterglowLogo } from '@/components/brand/AfterglowLogo';
+import { usePwaInstall } from '@/hooks/usePwaInstall';
 import {
   Settings,
   User,
@@ -21,6 +23,13 @@ import {
   Heart,
   Sliders,
   Sparkles,
+  Smartphone,
+  Laptop,
+  CheckCircle2,
+  Share,
+  PlusSquare,
+  ShieldCheck,
+  Radio,
 } from 'lucide-react';
 
 export function SettingsView() {
@@ -36,7 +45,20 @@ export function SettingsView() {
     setActiveTab,
   } = useMemoryStore();
 
-  const [activeSettingsTab, setActiveSettingsTab] = useState<'theme-studio' | 'profile' | 'storage' | 'sample-data'>('theme-studio');
+  const [activeSettingsTab, setActiveSettingsTab] = useState<
+    'theme-studio' | 'profile' | 'storage' | 'sample-data' | 'app-install'
+  >('theme-studio');
+
+  const {
+    isInstalled,
+    isInstallable,
+    isIos,
+    isDismissed,
+    promptInstall,
+    resetDismissal,
+    updateAvailable,
+    applyUpdate,
+  } = usePwaInstall();
 
   const [displayName, setDisplayName] = useState(settings.displayName || 'Dear Soul');
   const [greeting, setGreeting] = useState(settings.greeting || 'Good morning, sunshine ☀');
@@ -208,6 +230,22 @@ export function SettingsView() {
         >
           <TinyFlower className="w-3.5 h-3.5 text-[var(--ag-accent-primary)]" />
           <span>Starter Kit</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveSettingsTab('app-install')}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+            activeSettingsTab === 'app-install'
+              ? 'bg-[var(--ag-accent-primary)] text-white shadow-xs'
+              : 'bg-[var(--ag-surface)] text-[var(--ag-secondary-text)] hover:bg-[var(--ag-border)]'
+          }`}
+        >
+          <Smartphone className="w-3.5 h-3.5 text-[var(--ag-accent-primary)]" />
+          <span>Install App 📲</span>
+          {isInstalled && (
+            <span className="w-2 h-2 rounded-full bg-emerald-500" title="Installed" />
+          )}
         </button>
       </div>
 
@@ -428,7 +466,163 @@ export function SettingsView() {
         </section>
       )}
 
-      {/* Confirm Clear Samples Dialog */}
+      {/* RENDER APP INSTALLATION & PWA */}
+      {activeSettingsTab === 'app-install' && (
+        <section className="p-6 sm:p-8 rounded-2xl bg-[var(--ag-card-bg)] border border-[var(--ag-border)] shadow-2xs space-y-6 animate-in fade-in duration-200">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--ag-border)]">
+            <div className="flex items-center gap-3.5">
+              <AfterglowLogo variant="symbol" size="sm" />
+              <div>
+                <h2 className="font-heading text-xl font-bold text-[var(--ag-primary-text)]">
+                  App Installation & Offline Sanctuary
+                </h2>
+                <p className="font-caveat text-base text-[var(--ag-muted-text)]">
+                  Keep AFTERGLOW one tap away on your desktop, iPhone, iPad, or Android ♡
+                </p>
+              </div>
+            </div>
+
+            {/* Status Pill */}
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--ag-surface)] border border-[var(--ag-border)] text-xs font-semibold text-[var(--ag-secondary-text)] shrink-0">
+              {isInstalled ? (
+                <>
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  <span>Installed Standalone App</span>
+                </>
+              ) : (
+                <>
+                  <Laptop className="w-4 h-4 text-[var(--ag-accent-primary)]" />
+                  <span>Browser Mode</span>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Installation Hero Box */}
+          <div className="p-5 rounded-2xl bg-gradient-to-r from-[var(--ag-accent-secondary)]/40 to-[var(--ag-surface)] border border-[var(--ag-border)] space-y-3">
+            <h3 className="font-heading text-base font-semibold text-[var(--ag-primary-text)]">
+              {isInstalled
+                ? 'AFTERGLOW is installed and ready for your day'
+                : 'Enjoy a distraction-free, dedicated memory space'}
+            </h3>
+            <p className="text-xs text-[var(--ag-secondary-text)] leading-relaxed">
+              {isInstalled
+                ? 'Your diary runs in a focused standalone window without browser tabs or address bars. You can launch it directly from your dock, taskbar, or home screen.'
+                : 'Installing AFTERGLOW turns it into a native-like desktop or mobile application with fast loading, offline browsing, and quick shortcuts to capture moments.'}
+            </p>
+
+            {/* Install Action if supported */}
+            {!isInstalled && isInstallable && !isIos && (
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await promptInstall();
+                  }}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[var(--ag-accent-primary)] hover:bg-[var(--ag-accent-hover)] text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Install AFTERGLOW as Native App</span>
+                </button>
+              </div>
+            )}
+
+            {/* iOS Safari Guide */}
+            {!isInstalled && isIos && (
+              <div className="p-4 rounded-xl bg-[var(--ag-card-bg)] border border-[var(--ag-border)] space-y-2.5 mt-2">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[var(--ag-primary-text)]">
+                  <Smartphone className="w-4 h-4 text-[var(--ag-accent-primary)]" />
+                  <span>How to install on iOS / iPadOS Safari:</span>
+                </div>
+                <ol className="text-xs text-[var(--ag-secondary-text)] space-y-1.5 list-decimal list-inside">
+                  <li>
+                    Tap the <strong>Share</strong> button (
+                    <Share className="w-3.5 h-3.5 inline text-[var(--ag-accent-primary)]" />) in
+                    Safari&apos;s bottom toolbar.
+                  </li>
+                  <li>
+                    Scroll down and tap <strong>Add to Home Screen</strong> (
+                    <PlusSquare className="w-3.5 h-3.5 inline text-[var(--ag-accent-primary)]" />
+                    ).
+                  </li>
+                  <li>
+                    Tap <strong>Add</strong> in the top-right corner to place AFTERGLOW on your home
+                    screen.
+                  </li>
+                </ol>
+              </div>
+            )}
+          </div>
+
+          {/* System Specs & Data Protection Guarantee */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="p-4 rounded-xl bg-[var(--ag-surface)] border border-[var(--ag-border)] space-y-2">
+              <div className="flex items-center gap-2 text-xs font-semibold text-[var(--ag-primary-text)]">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span>Zero Cloud Storage • 100% Private</span>
+              </div>
+              <p className="text-[11px] text-[var(--ag-secondary-text)] leading-relaxed">
+                All memories, diary notes, and full-resolution photographs remain strictly inside your
+                device&apos;s local IndexedDB database. PWA service worker caching only caches UI files and
+                icons.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-[var(--ag-surface)] border border-[var(--ag-border)] space-y-2">
+              <div className="flex items-center gap-2 text-xs font-semibold text-[var(--ag-primary-text)]">
+                <Radio className="w-4 h-4 text-[var(--ag-accent-primary)]" />
+                <span>Offline Application Shell</span>
+              </div>
+              <p className="text-[11px] text-[var(--ag-secondary-text)] leading-relaxed">
+                Once visited or installed, the application shell, fonts, and assets are cached locally. You
+                can open AFTERGLOW and write diary reflections even when completely offline.
+              </p>
+            </div>
+          </div>
+
+          {/* Version, Updates & Prompt Management */}
+          <div className="p-4 rounded-xl bg-[var(--ag-surface)] border border-[var(--ag-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span className="block text-xs font-semibold text-[var(--ag-primary-text)]">
+                AFTERGLOW Progressive Web App
+              </span>
+              <span className="text-[11px] font-mono text-[var(--ag-muted-text)]">
+                Version 1.0.1 • Standalone PWA Architecture • Service Worker Active
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {updateAvailable ? (
+                <button
+                  type="button"
+                  onClick={applyUpdate}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  <span>Update Available • Reload</span>
+                </button>
+              ) : (
+                <span className="text-xs text-[var(--ag-muted-text)] font-sans">
+                  Application is up to date ✓
+                </span>
+              )}
+
+              {isDismissed && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    resetDismissal();
+                    alert('Floating installation invite restored to bottom-right corner.');
+                  }}
+                  className="px-3 py-1.5 rounded-full bg-[var(--ag-card-bg)] hover:bg-[var(--ag-border)] text-xs font-medium text-[var(--ag-secondary-text)] border border-[var(--ag-border)] transition-colors cursor-pointer"
+                >
+                  Restore Floating Invite
+                </button>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
       <ConfirmDialog
         isOpen={isClearSamplesOpen}
         title="Clear sample starter moments?"

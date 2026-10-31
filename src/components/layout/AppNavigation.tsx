@@ -5,6 +5,7 @@ import { useMemoryStore } from '@/store/useMemoryStore';
 import { ActiveTab } from '@/types/memory';
 import { THEMES } from '@/lib/themes';
 import { TinyFlower, TinySparkle } from '@/components/scrapbook/Decorations';
+import { AfterglowLogo } from '@/components/brand/AfterglowLogo';
 import {
   Home,
   Clock,
@@ -40,19 +41,13 @@ export function AppNavigation() {
         <div>
           <div
             onClick={() => setActiveTab('home')}
-            className="cursor-pointer group flex items-center gap-2 mb-8"
+            className="cursor-pointer group flex items-center mb-7"
           >
-            <div className="w-8 h-8 rounded-full bg-[var(--ag-accent-secondary)] flex items-center justify-center text-[var(--ag-secondary-text)] border border-[var(--ag-border)] group-hover:rotate-12 transition-transform duration-300">
-              <span className="theme-badge-symbol text-base leading-none" />
-            </div>
-            <div>
-              <span className="font-heading text-xl font-bold tracking-wider text-[var(--ag-primary-text)] uppercase block">
-                Afterglow
-              </span>
-              <span className="font-caveat text-xs text-[var(--ag-muted-text)] block -mt-1 tracking-normal line-clamp-1 max-w-[150px]">
-                {previewConfig.identity?.appSubtitle || 'a little place for the moments'}
-              </span>
-            </div>
+            <AfterglowLogo
+              variant="compact"
+              size="sm"
+              taglineText={previewConfig.identity?.appSubtitle || 'moments that matter ♡'}
+            />
           </div>
 
           {/* Navigation Links */}
@@ -110,16 +105,13 @@ export function AppNavigation() {
       <header className="md:hidden sticky top-0 z-40 bg-[var(--ag-nav-bg)] backdrop-blur-md border-b border-[var(--ag-border)] px-4 py-3 flex items-center justify-between transition-colors duration-250">
         <div
           onClick={() => setActiveTab('home')}
-          className="flex items-center gap-2 cursor-pointer"
+          className="flex items-center cursor-pointer"
         >
-          <div className="w-7 h-7 rounded-full bg-[var(--ag-accent-secondary)] flex items-center justify-center text-[var(--ag-secondary-text)] border border-[var(--ag-border)]">
-            <span className="theme-badge-symbol text-sm leading-none" />
-          </div>
-          <div>
-            <span className="font-heading text-lg font-bold tracking-wider text-[var(--ag-primary-text)] uppercase">
-              Afterglow
-            </span>
-          </div>
+          <AfterglowLogo
+            variant="compact"
+            size="xs"
+            taglineText={previewConfig.identity?.appSubtitle || 'moments that matter ♡'}
+          />
         </div>
 
         <button

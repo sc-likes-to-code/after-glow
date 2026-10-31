@@ -12,6 +12,8 @@ import { SettingsView } from '@/components/views/SettingsView';
 import { AtelierView } from '@/components/atelier/AtelierView';
 import { CaptureMemoryModal } from '@/components/scrapbook/CaptureMemoryModal';
 import { MemoryDetailModal } from '@/components/scrapbook/MemoryDetailModal';
+import { FloatingInstallPrompt } from '@/components/pwa/FloatingInstallPrompt';
+import { AfterglowLogo } from '@/components/brand/AfterglowLogo';
 import { TinyFlower, TinySparkle } from '@/components/scrapbook/Decorations';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -41,12 +43,11 @@ export default function AfterglowApp() {
       {/* Main Sanctuary Stage */}
       <main className="flex-1 flex flex-col min-w-0 min-h-screen px-4 sm:px-8 md:px-12 py-6 sm:py-8 overflow-x-hidden">
         {isLoading ? (
-          <div className="flex-1 flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-            <div className="w-12 h-12 rounded-full bg-[#EBCFD3]/60 flex items-center justify-center animate-pulse">
-              <TinyFlower className="w-6 h-6 text-[#B8707E]" />
+          <div className="flex-1 flex flex-col items-center justify-center min-h-[60vh] space-y-4 animate-in fade-in duration-300">
+            <div className="animate-pulse">
+              <AfterglowLogo variant="full" size="md" showTagline={true} />
             </div>
-            <p className="font-fraunces text-lg text-[#75665A]">Opening your memory book...</p>
-            <p className="font-caveat text-sm text-[#998A7F]">some moments are too beautiful to let them fade</p>
+            <p className="font-fraunces text-sm text-[var(--ag-secondary-text)]">Opening your memory sanctuary...</p>
           </div>
         ) : (
           <AnimatePresence mode="wait">
@@ -70,9 +71,10 @@ export default function AfterglowApp() {
         )}
       </main>
 
-      {/* Global Modals */}
+      {/* Global Modals & Floating Install Prompt */}
       <MemoryDetailModal />
       <CaptureMemoryModal />
+      <FloatingInstallPrompt />
     </div>
   );
 }

@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Background rounded square gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFDF9" />
+      <stop offset="50%" stop-color="#FAF5EC" />
+      <stop offset="100%" stop-color="#F2EAE0" />
+    </linearGradient>
+
+    <!-- Polaroid inner photo sky gradient -->
+    <linearGradient id="photoSky" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E9E0F2" />
+      <stop offset="42%" stop-color="#F5D7DC" />
+      <stop offset="80%" stop-color="#FCEFD8" />
+      <stop offset="100%" stop-color="#FDF4DE" />
+    </linearGradient>
+
+    <!-- Flower petal gradient -->
+    <linearGradient id="petalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#FFF7F8" />
+    </linearGradient>
+
+    <!-- Golden sun / glow -->
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFEAA7" stop-opacity="0.85" />
+      <stop offset="60%" stop-color="#F8D395" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#F5D7DC" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Center flower disc gradient -->
+    <linearGradient id="centerDisc" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F7BA4A" />
+      <stop offset="100%" stop-color="#E59929" />
+    </linearGradient>
+
+    <!-- Washi tape gradient -->
+    <linearGradient id="washiGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#EBCFD3" stop-opacity="0.94" />
+      <stop offset="50%" stop-color="#F5DFE3" stop-opacity="0.97" />
+      <stop offset="100%" stop-color="#E5BEC3" stop-opacity="0.92" />
+    </linearGradient>
+
+    <!-- Drop shadow for polaroid -->
+    <filter id="cardShadow" x="-15%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#55483F" flood-opacity="0.14" />
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#55483F" flood-opacity="0.08" />
+    </filter>
+  </defs>
+
+  <!-- Base container: Squircle badge -->
+  <rect x="18" y="18" width="476" height="476" rx="108" fill="url(#bgGrad)" stroke="#E8DFD1" stroke-width="4" />
+
+  <!-- Subtle corner sparkles on the badge -->
+  <path d="M 76 80 Q 76 90 86 90 Q 76 90 76 100 Q 76 90 66 90 Q 76 90 76 80 Z" fill="#D9AEB5" opacity="0.65" />
+  <path d="M 436 424 Q 436 432 444 432 Q 436 432 436 440 Q 436 432 428 432 Q 436 432 436 424 Z" fill="#E6A740" opacity="0.55" />
+
+  <!-- Polaroid Card (slightly tilted -2.5 deg) -->
+  <g transform="rotate(-2.5, 256, 260)" filter="url(#cardShadow)">
+    <!-- White Polaroid Border -->
+    <rect x="116" y="86" width="280" height="332" rx="14" fill="#FFFFFF" stroke="#EDE4D6" stroke-width="2" />
+
+    <!-- Inner Photo Area -->
+    <rect x="136" y="106" width="240" height="230" rx="8" fill="url(#photoSky)" />
+
+    <!-- Soft Golden Glow in Photo -->
+    <circle cx="256" cy="188" r="92" fill="url(#sunGlow)" />
+
+    <!-- Gentle distant mountain/hill silhouette -->
+    <path d="M 136 295 Q 190 270 250 285 Q 310 298 376 278 L 376 336 L 136 336 Z" fill="#E8D5CE" opacity="0.45" />
+
+    <!-- Botanical Stem -->
+    <path d="M 256 220 Q 254 265 248 300" stroke="#8A9E80" stroke-width="4.5" stroke-linecap="round" fill="none" />
+    <!-- Small Leaf Left -->
+    <path d="M 253 260 Q 230 252 232 268 Q 246 270 251 264" fill="#9CB292" />
+    <!-- Small Leaf Right -->
+    <path d="M 251 245 Q 272 238 274 252 Q 260 256 252 249" fill="#9CB292" />
+
+    <!-- Daisy Petals (5 petals) -->
+    <!-- Top -->
+    <path d="M 256 156 C 248 156 244 184 256 194 C 268 184 264 156 256 156 Z" fill="url(#petalGrad)" stroke="#EBD2D7" stroke-width="1.6" />
+    <!-- Right -->
+    <path d="M 298 188 C 298 180 270 179 262 194 C 272 204 298 196 298 188 Z" fill="url(#petalGrad)" stroke="#EBD2D7" stroke-width="1.6" />
+    <!-- Bottom-Right -->
+    <path d="M 282 230 C 288 224 267 205 259 199 C 254 211 274 235 282 230 Z" fill="url(#petalGrad)" stroke="#EBD2D7" stroke-width="1.6" />
+    <!-- Bottom-Left -->
+    <path d="M 230 230 C 224 224 245 205 253 199 C 258 211 238 235 230 230 Z" fill="url(#petalGrad)" stroke="#EBD2D7" stroke-width="1.6" />
+    <!-- Left -->
+    <path d="M 214 188 C 214 180 242 179 250 194 C 240 204 214 196 214 188 Z" fill="url(#petalGrad)" stroke="#EBD2D7" stroke-width="1.6" />
+
+    <!-- Flower Center Disc -->
+    <circle cx="256" cy="194" r="14" fill="url(#centerDisc)" />
+    <circle cx="256" cy="194" r="10" fill="#F9CA5A" />
+    <!-- Center dots -->
+    <circle cx="253" cy="192" r="1.5" fill="#B8781C" />
+    <circle cx="259" cy="192" r="1.5" fill="#B8781C" />
+    <circle cx="256" cy="196" r="1.5" fill="#B8781C" />
+
+    <!-- Golden Celestial Sparkles -->
+    <!-- Big 4-point Sparkle (Top-Right) -->
+    <g transform="translate(330, 140)">
+      <path d="M 0 -17 Q 0 0 17 0 Q 0 0 0 17 Q 0 0 -17 0 Q 0 0 0 -17 Z" fill="#F6BE46" />
+      <circle cx="0" cy="0" r="3.2" fill="#FFF9EB" />
+    </g>
+    <!-- Little Sparkle (Left) -->
+    <g transform="translate(170, 172) scale(0.68)">
+      <path d="M 0 -14 Q 0 0 14 0 Q 0 0 0 14 Q 0 0 -14 0 Q 0 0 0 -14 Z" fill="#D9AEB5" />
+      <circle cx="0" cy="0" r="2.5" fill="#FFFFFF" />
+    </g>
+    <!-- Twinkle Dots -->
+    <circle cx="342" cy="222" r="2.5" fill="#F6BE46" opacity="0.85" />
+    <circle cx="164" cy="130" r="2.2" fill="#E8B8C0" opacity="0.75" />
+
+    <!-- Polaroid Bottom Margin: Soft Dusty Rose Heart -->
+    <g transform="translate(256, 372)">
+      <path d="M 0 -5 C -4 -11 -14 -8 -14 -1 C -14 6 0 14 0 14 C 0 14 14 6 14 -1 C 14 -8 4 -11 0 -5 Z" fill="#D9AEB5" />
+      <!-- Handwritten gentle underline -->
+      <path d="M -26 6 Q -16 10 -6 8 M 6 8 Q 16 10 26 6" stroke="#CBB4A7" stroke-width="1.8" stroke-linecap="round" fill="none" />
+    </g>
+
+    <!-- Washi Tape at Top (tilted 3 deg) -->
+    <g transform="translate(256, 86) rotate(3)">
+      <rect x="-48" y="-12" width="96" height="22" rx="3" fill="url(#washiGrad)" />
+      <path d="M -48 -12 l 3 4 l -3 4 l 3 4 l -3 4 l 3 3 l -3 3" stroke="#D9AEB5" stroke-width="1" fill="none" opacity="0.6" />
+      <path d="M 48 -12 l -3 4 l 3 4 l -3 4 l 3 4 l -3 3 l 3 3" stroke="#D9AEB5" stroke-width="1" fill="none" opacity="0.6" />
+    </g>
+  </g>
+</svg>

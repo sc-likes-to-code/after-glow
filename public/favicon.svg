@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="favSky" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EBCFD3" />
+      <stop offset="100%" stop-color="#F2E8BF" />
+    </linearGradient>
+  </defs>
+  <!-- Rounded badge background -->
+  <rect x="1" y="1" width="30" height="30" rx="8" fill="#FAF7F0" stroke="#E8DFD1" stroke-width="1" />
+  <!-- Mini Polaroid frame -->
+  <g transform="rotate(-2, 16, 16)">
+    <rect x="5" y="4" width="22" height="24" rx="2" fill="#FFFFFF" />
+    <rect x="7" y="6" width="18" height="15" rx="1.5" fill="url(#favSky)" />
+    <!-- Daisy & Sparkle -->
+    <circle cx="16" cy="13.5" r="3.2" fill="#F6BA46" />
+    <circle cx="16" cy="9.5" r="2" fill="#FFFFFF" />
+    <circle cx="20" cy="13.5" r="2" fill="#FFFFFF" />
+    <circle cx="16" cy="17.5" r="2" fill="#FFFFFF" />
+    <circle cx="12" cy="13.5" r="2" fill="#FFFFFF" />
+    <circle cx="22" cy="8.5" r="1.2" fill="#F6BE46" />
+    <!-- Heart on chin -->
+    <circle cx="16" cy="24.5" r="1" fill="#D9AEB5" />
+  </g>
+</svg>
