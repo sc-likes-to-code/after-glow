@@ -43,7 +43,7 @@ export function AppNavigation() {
             className="cursor-pointer group flex items-center gap-2 mb-8"
           >
             <div className="w-8 h-8 rounded-full bg-[var(--ag-accent-secondary)] flex items-center justify-center text-[var(--ag-secondary-text)] border border-[var(--ag-border)] group-hover:rotate-12 transition-transform duration-300">
-              <span className="text-base">{activeSymbol}</span>
+              <span className="theme-badge-symbol text-base leading-none" />
             </div>
             <div>
               <span className="font-heading text-xl font-bold tracking-wider text-[var(--ag-primary-text)] uppercase block">
@@ -113,7 +113,7 @@ export function AppNavigation() {
           className="flex items-center gap-2 cursor-pointer"
         >
           <div className="w-7 h-7 rounded-full bg-[var(--ag-accent-secondary)] flex items-center justify-center text-[var(--ag-secondary-text)] border border-[var(--ag-border)]">
-            <span className="text-sm">{currentTheme.badgeSymbol}</span>
+            <span className="theme-badge-symbol text-sm leading-none" />
           </div>
           <div>
             <span className="font-heading text-lg font-bold tracking-wider text-[var(--ag-primary-text)] uppercase">

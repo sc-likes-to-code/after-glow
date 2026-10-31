@@ -101,6 +101,12 @@ export function applyAtelierConfigToDOM(config: AtelierConfiguration): void {
   root.setAttribute('data-button-shape', config.components.buttonShape);
   root.setAttribute('data-radius-system', config.layout.borderRadiusSystem);
 
+  if (config.identity?.badgeSymbol) {
+    root.style.setProperty('--ag-badge-symbol', `"${config.identity.badgeSymbol}"`);
+  } else {
+    root.style.removeProperty('--ag-badge-symbol');
+  }
+
   // 2. Custom Color Palette Overrides
   const colors = config.colors || {};
 

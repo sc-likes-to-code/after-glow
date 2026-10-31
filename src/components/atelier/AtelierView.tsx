@@ -35,6 +35,8 @@ import {
   X,
   AlertCircle,
   Undo2,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 
 export function AtelierView() {
@@ -64,6 +66,50 @@ export function AtelierView() {
   const [themeToDelete, setThemeToDelete] = useState<CustomTheme | null>(null);
 
   const [appliedFeedback, setAppliedFeedback] = useState(false);
+
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScrollability = React.useCallback(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    const { scrollLeft, scrollWidth, clientWidth } = el;
+    setCanScrollLeft(scrollLeft > 6);
+    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 6);
+  }, []);
+
+  React.useEffect(() => {
+    checkScrollability();
+    const handleResize = () => checkScrollability();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [checkScrollability]);
+
+  const handleScroll = (direction: 'left' | 'right') => {
+    if (!scrollContainerRef.current) return;
+    const offset = direction === 'left' ? -260 : 260;
+    scrollContainerRef.current.scrollBy({ left: offset, behavior: 'smooth' });
+    setTimeout(checkScrollability, 300);
+  };
+
+  const handleSelectCategory = (catId: AtelierCategory) => {
+    setActiveCategory(catId);
+    setTimeout(() => {
+      const el = document.getElementById(`atelier-tab-${catId}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }, 40);
+  };
+
+  const handleWheel = (e: React.WheelEvent) => {
+    if (!scrollContainerRef.current) return;
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      scrollContainerRef.current.scrollLeft += e.deltaY;
+      checkScrollability();
+    }
+  };
 
   const categories: {
     id: AtelierCategory;
@@ -201,29 +247,75 @@ export function AtelierView() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* LEFT COLUMN: ATELIER CATEGORY RAIL & ACTIVE STUDIO PANEL */}
         <div className="lg:col-span-7 xl:col-span-8 space-y-6">
-          {/* CATEGORIES HORIZONTAL NAVIGATION PILLS */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none border-b border-[var(--ag-border)]">
-            {categories.map((cat) => {
-              const isActive = activeCategory === cat.id;
+          {/* CATEGORIES HORIZONTAL NAVIGATION WITH CHEVRON SCROLLERS */}
+          <div className="relative p-1.5 rounded-2xl bg-[var(--ag-surface)] border border-[var(--ag-border)] shadow-2xs">
+            {/* Left Scroll Button */}
+            {canScrollLeft && (
+              <button
+                type="button"
+                onClick={() => handleScroll('left')}
+                aria-label="Scroll studio categories left"
+                className="absolute left-1.5 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-[var(--ag-card-bg)] hover:bg-[var(--ag-accent-secondary)] text-[var(--ag-secondary-text)] hover:text-[var(--ag-primary-text)] border border-[var(--ag-border)] shadow-md flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+            )}
 
-              return (
-                <button
-                  key={cat.id}
-                  type="button"
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer border ${
-                    isActive
-                      ? 'border-[var(--ag-accent-primary)] bg-[var(--ag-accent-secondary)] text-[var(--ag-primary-text)] shadow-2xs font-bold'
-                      : 'border-transparent text-[var(--ag-secondary-text)] hover:bg-[var(--ag-surface)] hover:text-[var(--ag-primary-text)]'
-                  }`}
-                >
-                  <span className={isActive ? 'text-[var(--ag-accent-primary)]' : 'text-[var(--ag-muted-text)]'}>
-                    {cat.icon}
-                  </span>
-                  <span>{cat.label}</span>
-                </button>
-              );
-            })}
+            {/* Left fade gradient */}
+            {canScrollLeft && (
+              <div className="absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-[var(--ag-surface)] via-[var(--ag-surface)]/80 to-transparent pointer-events-none z-[5] rounded-l-2xl" />
+            )}
+
+            {/* Scrollable Track */}
+            <div
+              ref={scrollContainerRef}
+              onScroll={checkScrollability}
+              onWheel={handleWheel}
+              className="flex items-center gap-1.5 overflow-x-auto scroll-smooth py-1 px-1 no-scrollbar select-none"
+            >
+              {categories.map((cat, idx) => {
+                const isActive = activeCategory === cat.id;
+
+                return (
+                  <button
+                    key={cat.id}
+                    id={`atelier-tab-${cat.id}`}
+                    type="button"
+                    onClick={() => handleSelectCategory(cat.id)}
+                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer border shrink-0 ${
+                      isActive
+                        ? 'border-[var(--ag-accent-primary)] bg-[var(--ag-accent-secondary)] text-[var(--ag-primary-text)] shadow-2xs font-bold ring-2 ring-[var(--ag-accent-primary)]/20'
+                        : 'border-transparent bg-transparent text-[var(--ag-secondary-text)] hover:bg-[var(--ag-card-bg)] hover:text-[var(--ag-primary-text)]'
+                    }`}
+                  >
+                    <span className={isActive ? 'text-[var(--ag-accent-primary)] scale-110' : 'text-[var(--ag-muted-text)]'}>
+                      {cat.icon}
+                    </span>
+                    <span>{cat.label}</span>
+                    <span className="text-[10px] font-mono opacity-40 ml-0.5">
+                      {idx + 1}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Right Scroll Button */}
+            {canScrollRight && (
+              <button
+                type="button"
+                onClick={() => handleScroll('right')}
+                aria-label="Scroll studio categories right"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-[var(--ag-card-bg)] hover:bg-[var(--ag-accent-secondary)] text-[var(--ag-secondary-text)] hover:text-[var(--ag-primary-text)] border border-[var(--ag-border)] shadow-md flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            )}
+
+            {/* Right fade gradient */}
+            {canScrollRight && (
+              <div className="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-[var(--ag-surface)] via-[var(--ag-surface)]/80 to-transparent pointer-events-none z-[5] rounded-r-2xl" />
+            )}
           </div>
 
           {/* ACTIVE STUDIO PANEL */}

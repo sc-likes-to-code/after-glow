@@ -118,6 +118,21 @@ interface MemoryStoreState {
   refreshStats: () => Promise<void>;
 }
 
+const getInitialThemeCustomization = (): ThemeCustomization => {
+  if (typeof window === 'undefined') return DEFAULT_THEME_CUSTOMIZATION;
+  return getStoredThemeCustomization();
+};
+
+const getInitialAtelierConfig = (): AtelierConfiguration => {
+  if (typeof window === 'undefined') return DEFAULT_ATELIER_CONFIG;
+  const cfg = getStoredAtelierConfig();
+  const theme = getStoredThemeCustomization();
+  if (theme && theme.themeId && cfg.themeId !== theme.themeId) {
+    return { ...cfg, themeId: theme.themeId };
+  }
+  return cfg;
+};
+
 export const useMemoryStore = create<MemoryStoreState>((set, get) => ({
   activeTab: 'home',
   setActiveTab: (tab) => set({ activeTab: tab }),
@@ -141,9 +156,9 @@ export const useMemoryStore = create<MemoryStoreState>((set, get) => ({
   memories: [],
   collections: [],
   settings: DEFAULT_USER_SETTINGS,
-  themeCustomization: DEFAULT_THEME_CUSTOMIZATION,
-  atelierConfig: DEFAULT_ATELIER_CONFIG,
-  previewConfig: DEFAULT_ATELIER_CONFIG,
+  themeCustomization: getInitialThemeCustomization(),
+  atelierConfig: getInitialAtelierConfig(),
+  previewConfig: getInitialAtelierConfig(),
   isAtelierDirty: false,
   customThemes: [],
   activeCustomThemeId: null,

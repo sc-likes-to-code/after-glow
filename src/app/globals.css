@@ -15,6 +15,7 @@ html.preload *::after {
 @layer base {
   :root {
     /* DEFAULT THEME: VANILLA DREAMS */
+    --ag-badge-symbol: "🌸";
     --ag-bg: #FAF7F0;
     --ag-surface: #F4EFE6;
     --ag-surface-elevated: #FFFDF9;
@@ -41,6 +42,7 @@ html.preload *::after {
 
   /* 1. VANILLA DREAMS */
   [data-theme="vanilla-dreams"] {
+    --ag-badge-symbol: "🌸";
     --ag-bg: #FAF7F0;
     --ag-surface: #F4EFE6;
     --ag-surface-elevated: #FFFDF9;
@@ -62,6 +64,7 @@ html.preload *::after {
 
   /* 2. LAVENDER HAZE */
   [data-theme="lavender-haze"] {
+    --ag-badge-symbol: "✨";
     --ag-bg: #F7F3FC;
     --ag-surface: #ECE4F7;
     --ag-surface-elevated: #FFFFFF;
@@ -83,6 +86,7 @@ html.preload *::after {
 
   /* 3. BOTANICAL GARDEN */
   [data-theme="botanical-garden"] {
+    --ag-badge-symbol: "🌿";
     --ag-bg: #F5F7F3;
     --ag-surface: #E8EDE3;
     --ag-surface-elevated: #FCFDFB;
@@ -104,6 +108,7 @@ html.preload *::after {
 
   /* 4. PEACHY SUMMER */
   [data-theme="peachy-summer"] {
+    --ag-badge-symbol: "☀";
     --ag-bg: #FFF6F0;
     --ag-surface: #FDE7DC;
     --ag-surface-elevated: #FFFFFF;
@@ -125,6 +130,7 @@ html.preload *::after {
 
   /* 5. COCOA & LETTERS */
   [data-theme="cocoa-letters"] {
+    --ag-badge-symbol: "☕";
     --ag-bg: #F7F3EC;
     --ag-surface: #EFE5D8;
     --ag-surface-elevated: #FCFAF6;
@@ -146,6 +152,7 @@ html.preload *::after {
 
   /* 6. MIDNIGHT REVERIE (DEDICATED DARK THEME) */
   [data-theme="midnight-reverie"] {
+    --ag-badge-symbol: "🌙";
     --ag-bg: #121624;
     --ag-surface: #1B2032;
     --ag-surface-elevated: #23293F;
@@ -167,6 +174,7 @@ html.preload *::after {
 
   /* 7. CLOUD NINE */
   [data-theme="cloud-nine"] {
+    --ag-badge-symbol: "☁";
     --ag-bg: #F3F7FA;
     --ag-surface: #E5EDF4;
     --ag-surface-elevated: #FFFFFF;
@@ -188,6 +196,7 @@ html.preload *::after {
 
   /* 8. ROSEWATER */
   [data-theme="rosewater"] {
+    --ag-badge-symbol: "🌹";
     --ag-bg: #FBF4F5;
     --ag-surface: #F3E5E8;
     --ag-surface-elevated: #FFFFFF;
@@ -227,6 +236,18 @@ html.preload *::after {
   [data-font-pairing="lora-nunito"] {
     --font-heading: var(--font-lora), serif;
     --font-body: var(--font-nunito), sans-serif;
+  }
+
+  /* Brand Badge Symbol (Zero-Flash Pseudo Element) */
+  .theme-badge-symbol {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .theme-badge-symbol::before {
+    content: var(--ag-badge-symbol, "🌸");
+    display: inline-block;
+    line-height: 1;
   }
 
   /* BACKGROUND STYLES */

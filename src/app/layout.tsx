@@ -135,6 +135,9 @@ export default function RootLayout({
             if (aCfg.layout.borderRadiusSystem) root.setAttribute('data-radius-system', aCfg.layout.borderRadiusSystem);
           }
           if (aCfg.components && aCfg.components.buttonShape) root.setAttribute('data-button-shape', aCfg.components.buttonShape);
+          if (aCfg.identity && aCfg.identity.badgeSymbol) {
+            root.style.setProperty('--ag-badge-symbol', '"' + aCfg.identity.badgeSymbol + '"');
+          }
 
           if (aCfg.colors) {
             var col = aCfg.colors;
