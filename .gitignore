@@ -1,0 +1,62 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Next.js Build & Outputs
+.next/
+/out/
+/build/
+/dist/
+.turbo/
+
+# Environment Variables & Local Secrets
+.env
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDE & Editor Files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# AI Agent & Assistant Files
+AGENTS.md
+.gemini/
+.agent/
+.claude/
+.cursor/
+.system_generated/
+
+# Testing & Coverage
+coverage/
+.nyc_output/
+
+# TypeScript Cache
+*.tsbuildinfo
+next-env.d.ts
