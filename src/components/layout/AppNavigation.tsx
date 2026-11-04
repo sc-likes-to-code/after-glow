@@ -23,14 +23,14 @@ export function AppNavigation() {
   const currentTheme = THEMES[previewConfig.themeId as keyof typeof THEMES] || THEMES['vanilla-dreams'];
   const activeSymbol = previewConfig.identity?.badgeSymbol || currentTheme.badgeSymbol;
 
-  const navItems: { id: ActiveTab; label: string; icon: React.ReactNode }[] = [
-    { id: 'home', label: 'Home', icon: <Home className="w-4 h-4" /> },
-    { id: 'timeline', label: 'My Timeline', icon: <Clock className="w-4 h-4" /> },
-    { id: 'garden', label: 'Mood Garden', icon: <Flower2 className="w-4 h-4" /> },
-    { id: 'collections', label: 'Collections', icon: <FolderHeart className="w-4 h-4" /> },
-    { id: 'search', label: 'Search', icon: <Search className="w-4 h-4" /> },
-    { id: 'atelier', label: 'Atelier', icon: <Sparkles className="w-4 h-4" /> },
-    { id: 'settings', label: 'Settings', icon: <Settings className="w-4 h-4" /> },
+  const navItems: { id: ActiveTab; label: string; shortLabel?: string; icon: React.ReactNode }[] = [
+    { id: 'home', label: 'Home', shortLabel: 'Home', icon: <Home className="w-4 h-4" /> },
+    { id: 'timeline', label: 'My Timeline', shortLabel: 'Timeline', icon: <Clock className="w-4 h-4" /> },
+    { id: 'garden', label: 'Mood Garden', shortLabel: 'Garden', icon: <Flower2 className="w-4 h-4" /> },
+    { id: 'collections', label: 'Collections', shortLabel: 'Collections', icon: <FolderHeart className="w-4 h-4" /> },
+    { id: 'search', label: 'Search', shortLabel: 'Search', icon: <Search className="w-4 h-4" /> },
+    { id: 'atelier', label: 'Atelier', shortLabel: 'Atelier', icon: <Sparkles className="w-4 h-4" /> },
+    { id: 'settings', label: 'Settings', shortLabel: 'Settings', icon: <Settings className="w-4 h-4" /> },
   ];
 
   return (
@@ -124,8 +124,11 @@ export function AppNavigation() {
         </button>
       </header>
 
-      {/* MOBILE FLOATING BOTTOM NAVIGATION */}
-      <div className="md:hidden fixed bottom-3 left-3 right-3 z-40 bg-[var(--ag-nav-bg)] backdrop-blur-md border border-[var(--ag-border)] rounded-2xl shadow-xl px-2 py-2 flex items-center justify-around transition-colors duration-250">
+      {/* MOBILE FLOATING BOTTOM NAVIGATION (Active-Only Pill) */}
+      <nav
+        aria-label="Mobile Navigation"
+        className="md:hidden fixed bottom-3 left-3 right-3 z-40 bg-[var(--ag-nav-bg)]/95 backdrop-blur-md border border-[var(--ag-border)] rounded-2xl shadow-xl px-2 py-1.5 flex items-center justify-between transition-colors duration-250 select-none"
+      >
         {navItems.map((item) => {
           const isActive = activeTab === item.id;
           return (
@@ -133,18 +136,25 @@ export function AppNavigation() {
               key={item.id}
               type="button"
               onClick={() => setActiveTab(item.id)}
-              className={`flex flex-col items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] transition-colors duration-100 ${
+              aria-label={item.label}
+              className={`flex items-center justify-center transition-all duration-200 cursor-pointer ${
                 isActive
-                  ? 'text-[var(--ag-primary-text)] bg-[var(--ag-accent-secondary)] font-semibold'
-                  : 'text-[var(--ag-muted-text)] hover:text-[var(--ag-primary-text)]'
+                  ? 'bg-[var(--ag-accent-secondary)] text-[var(--ag-primary-text)] border border-[var(--ag-accent-primary)]/40 shadow-xs px-3 py-1.5 rounded-xl gap-1.5 shrink-0'
+                  : 'text-[var(--ag-muted-text)] hover:text-[var(--ag-primary-text)] p-2 rounded-xl shrink-0 active:scale-95'
               }`}
             >
-              <span>{item.icon}</span>
-              <span className="truncate max-w-[50px]">{item.label}</span>
+              <span className={isActive ? 'text-[var(--ag-accent-primary)]' : ''}>
+                {item.icon}
+              </span>
+              {isActive && (
+                <span className="text-xs font-semibold whitespace-nowrap animate-in fade-in zoom-in-95 duration-150">
+                  {item.shortLabel || item.label}
+                </span>
+              )}
             </button>
           );
         })}
-      </div>
+      </nav>
     </>
   );
 }

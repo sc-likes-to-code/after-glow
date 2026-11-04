@@ -41,7 +41,7 @@ export default function AfterglowApp() {
       <AppNavigation />
 
       {/* Main Sanctuary Stage */}
-      <main className="flex-1 flex flex-col min-w-0 min-h-screen px-4 sm:px-8 md:px-12 py-6 sm:py-8 overflow-x-hidden">
+      <main className="flex-1 flex flex-col min-w-0 min-h-screen px-4 sm:px-8 md:px-12 pt-6 pb-24 sm:py-8 overflow-x-hidden">
         {isLoading ? (
           <div className="flex-1 flex flex-col items-center justify-center min-h-[60vh] space-y-4 animate-in fade-in duration-300">
             <div className="animate-pulse">
