@@ -119,18 +119,11 @@ interface MemoryStoreState {
 }
 
 const getInitialThemeCustomization = (): ThemeCustomization => {
-  if (typeof window === 'undefined') return DEFAULT_THEME_CUSTOMIZATION;
-  return getStoredThemeCustomization();
+  return DEFAULT_THEME_CUSTOMIZATION;
 };
 
 const getInitialAtelierConfig = (): AtelierConfiguration => {
-  if (typeof window === 'undefined') return DEFAULT_ATELIER_CONFIG;
-  const cfg = getStoredAtelierConfig();
-  const theme = getStoredThemeCustomization();
-  if (theme && theme.themeId && cfg.themeId !== theme.themeId) {
-    return { ...cfg, themeId: theme.themeId };
-  }
-  return cfg;
+  return DEFAULT_ATELIER_CONFIG;
 };
 
 export const useMemoryStore = create<MemoryStoreState>((set, get) => ({
@@ -204,9 +197,11 @@ export const useMemoryStore = create<MemoryStoreState>((set, get) => ({
       let activeAtelier = storedSettings?.value?.atelierConfig || getStoredAtelierConfig();
 
       if (storedThemeCustomization && storedThemeCustomization.themeId) {
+        const isThemeMismatch = activeAtelier.themeId !== storedThemeCustomization.themeId;
         activeAtelier = {
           ...activeAtelier,
           themeId: storedThemeCustomization.themeId,
+          activeCustomThemeId: isThemeMismatch ? null : activeAtelier.activeCustomThemeId,
           typography: {
             ...activeAtelier.typography,
             pairingId: storedThemeCustomization.fontPairing || activeAtelier.typography.pairingId,
@@ -226,9 +221,15 @@ export const useMemoryStore = create<MemoryStoreState>((set, get) => ({
             ...activeAtelier.layout,
             density: storedThemeCustomization.density || activeAtelier.layout.density,
           },
-          colors: {
-            ...activeAtelier.colors,
-            ...(storedThemeCustomization.customAccentColor ? { accentPrimary: storedThemeCustomization.customAccentColor } : {}),
+          colors: isThemeMismatch
+            ? (storedThemeCustomization.customAccentColor ? { accentPrimary: storedThemeCustomization.customAccentColor } : {})
+            : {
+                ...activeAtelier.colors,
+                ...(storedThemeCustomization.customAccentColor ? { accentPrimary: storedThemeCustomization.customAccentColor } : {}),
+              },
+          identity: {
+            ...activeAtelier.identity,
+            badgeSymbol: THEMES[storedThemeCustomization.themeId as ThemeId]?.badgeSymbol || activeAtelier.identity.badgeSymbol,
           },
         };
       }
@@ -241,7 +242,7 @@ export const useMemoryStore = create<MemoryStoreState>((set, get) => ({
         memories,
         collections,
         settings: storedSettings?.value || DEFAULT_USER_SETTINGS,
-        themeCustomization: storedSettings?.value?.themeCustomization || DEFAULT_THEME_CUSTOMIZATION,
+        themeCustomization: storedThemeCustomization || DEFAULT_THEME_CUSTOMIZATION,
         atelierConfig: activeAtelier,
         previewConfig: activeAtelier,
         isAtelierDirty: false,
@@ -363,14 +364,31 @@ export const useMemoryStore = create<MemoryStoreState>((set, get) => ({
 
   updateThemeCustomization: async (partial) => {
     const current = get().themeCustomization;
-    const merged: ThemeCustomization = { ...current, ...partial };
-    applyThemeToDOM(merged);
-    set({ themeCustomization: merged });
-
     const currentAtelier = get().atelierConfig;
+    const isThemeSwitch = Boolean(partial.themeId);
+
+    const merged: ThemeCustomization = { ...current, ...partial };
+    if ('customAccentColor' in partial && partial.customAccentColor === undefined) {
+      delete merged.customAccentColor;
+    }
+
+    const targetTheme = THEMES[merged.themeId] || THEMES['vanilla-dreams'];
+
+    // When an atmosphere/theme is selected, clear stale custom color overrides so the theme palette applies cleanly
+    const newColors = isThemeSwitch
+      ? (merged.customAccentColor ? { accentPrimary: merged.customAccentColor } : {})
+      : {
+          ...currentAtelier.colors,
+          ...(merged.customAccentColor ? { accentPrimary: merged.customAccentColor } : {}),
+        };
+    if (isThemeSwitch && !merged.customAccentColor) {
+      delete newColors.accentPrimary;
+    }
+
     const updatedAtelier: AtelierConfiguration = {
       ...currentAtelier,
       themeId: merged.themeId,
+      activeCustomThemeId: isThemeSwitch ? null : currentAtelier.activeCustomThemeId,
       typography: {
         ...currentAtelier.typography,
         pairingId: merged.fontPairing || currentAtelier.typography.pairingId,
@@ -399,13 +417,30 @@ export const useMemoryStore = create<MemoryStoreState>((set, get) => ({
         ...currentAtelier.layout,
         density: merged.density || currentAtelier.layout.density,
       },
-      colors: {
-        ...currentAtelier.colors,
-        ...(merged.customAccentColor ? { accentPrimary: merged.customAccentColor } : {}),
+      colors: newColors,
+      identity: {
+        ...currentAtelier.identity,
+        badgeSymbol: isThemeSwitch ? targetTheme.badgeSymbol : currentAtelier.identity.badgeSymbol,
       },
     };
+
+    if (isThemeSwitch) {
+      // Clear custom background image/patterns when an atmosphere is chosen
+      if (typeof document !== 'undefined') {
+        document.body.style.backgroundImage = 'none';
+      }
+    }
+
+    applyThemeToDOM(merged);
     applyAtelierConfigToDOM(updatedAtelier);
-    set({ atelierConfig: updatedAtelier, previewConfig: updatedAtelier });
+
+    set({
+      themeCustomization: merged,
+      atelierConfig: updatedAtelier,
+      previewConfig: updatedAtelier,
+      activeCustomThemeId: isThemeSwitch ? null : get().activeCustomThemeId,
+      isAtelierDirty: false,
+    });
 
     if (db) {
       const currentSettings = get().settings;
@@ -421,13 +456,24 @@ export const useMemoryStore = create<MemoryStoreState>((set, get) => ({
 
   resetThemeCustomization: async () => {
     applyThemeToDOM(DEFAULT_THEME_CUSTOMIZATION);
-    set({ themeCustomization: DEFAULT_THEME_CUSTOMIZATION });
+    applyAtelierConfigToDOM(DEFAULT_ATELIER_CONFIG);
+    if (typeof document !== 'undefined') {
+      document.body.style.backgroundImage = 'none';
+    }
+    set({
+      themeCustomization: DEFAULT_THEME_CUSTOMIZATION,
+      atelierConfig: DEFAULT_ATELIER_CONFIG,
+      previewConfig: DEFAULT_ATELIER_CONFIG,
+      activeCustomThemeId: null,
+      isAtelierDirty: false,
+    });
 
     if (db) {
       const currentSettings = get().settings;
       const updatedSettings = {
         ...currentSettings,
         themeCustomization: DEFAULT_THEME_CUSTOMIZATION,
+        atelierConfig: DEFAULT_ATELIER_CONFIG,
       };
       await db.settings.put({ key: 'user_settings', value: updatedSettings });
       set({ settings: updatedSettings });

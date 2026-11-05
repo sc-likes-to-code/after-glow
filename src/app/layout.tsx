@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { ThemeScript } from '@/components/theme/ThemeScript';
 import {
   Fraunces,
   Nunito_Sans,
@@ -218,13 +219,11 @@ export default function RootLayout({
       `}
       suppressHydrationWarning
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-        <link rel="manifest" href="/manifest.webmanifest" />
-        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
-        <meta name="mobile-web-app-capable" content="yes" />
-      </head>
-      <body className="antialiased min-h-screen bg-[var(--ag-bg)] text-[var(--ag-text-primary)]">
+      <body
+        className="antialiased min-h-screen bg-[var(--ag-bg)] text-[var(--ag-primary-text)]"
+        suppressHydrationWarning
+      >
+        <ThemeScript script={themeInitScript} />
         {children}
       </body>
     </html>

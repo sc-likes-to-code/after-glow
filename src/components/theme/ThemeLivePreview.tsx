@@ -35,13 +35,13 @@ export function ThemeLivePreview({ theme, customization }: ThemeLivePreviewProps
   };
 
   return (
-    <div className="relative rounded-2xl p-4 sm:p-6 border border-[#E8DFD1] bg-[#FAF7F0]/60 shadow-inner overflow-hidden">
+    <div className="relative rounded-2xl p-4 sm:p-6 border border-[var(--ag-border)] bg-[var(--ag-surface)]/60 shadow-inner overflow-hidden">
       {/* Label Badge */}
       <div className="flex items-center justify-between mb-3">
-        <span className="text-[11px] uppercase tracking-wider font-semibold text-[#75665A] flex items-center gap-1.5">
-          <Sparkles className="w-3.5 h-3.5 text-[#D9AEB5]" /> Live Atmosphere Showcase
+        <span className="text-[11px] uppercase tracking-wider font-semibold text-[var(--ag-secondary-text)] flex items-center gap-1.5">
+          <Sparkles className="w-3.5 h-3.5 text-[var(--ag-accent-primary)]" /> Live Atmosphere Showcase
         </span>
-        <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-[#FAF7F0] border border-[#E8DFD1] text-[#998A7F]">
+        <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-[var(--ag-card-bg)] border border-[var(--ag-border)] text-[var(--ag-muted-text)]">
           {theme.name} • {fontConfig.name.split('+')[0].trim()}
         </span>
       </div>

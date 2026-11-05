@@ -19,6 +19,7 @@ export function applyThemeToDOM(customization: ThemeCustomization): void {
   root.setAttribute('data-bg-style', customization.backgroundStyle);
   root.setAttribute('data-decor-style', customization.decorationStyle);
   root.setAttribute('data-density', customization.density);
+  root.style.setProperty('--ag-badge-symbol', `"${theme.badgeSymbol}"`);
 
   // If a custom accent color is specified, override the primary accent tokens
   if (customization.customAccentColor) {

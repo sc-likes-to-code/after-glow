@@ -27,14 +27,20 @@ import {
 } from 'lucide-react';
 
 export function ThemeStudio() {
-  const { themeCustomization, updateThemeCustomization, resetThemeCustomization } = useMemoryStore();
+  const { themeCustomization, updateThemeCustomization, resetThemeCustomization, previewConfig } = useMemoryStore();
 
   const [activeTab, setActiveTab] = useState<'themes' | 'customize'>('themes');
+
+  const activeThemeId = (previewConfig?.themeId as ThemeId) || themeCustomization.themeId || 'vanilla-dreams';
+  const currentTheme = THEMES[activeThemeId] || THEMES['vanilla-dreams'];
+
   const [customColorInput, setCustomColorInput] = useState(
-    themeCustomization.customAccentColor || '#D9AEB5'
+    themeCustomization.customAccentColor || currentTheme.palette.accentPrimary
   );
 
-  const currentTheme = THEMES[themeCustomization.themeId] || THEMES['vanilla-dreams'];
+  React.useEffect(() => {
+    setCustomColorInput(themeCustomization.customAccentColor || currentTheme.palette.accentPrimary);
+  }, [themeCustomization.customAccentColor, currentTheme.palette.accentPrimary]);
 
   const handleSelectTheme = async (themeId: ThemeId) => {
     const targetTheme = THEMES[themeId];
@@ -43,6 +49,7 @@ export function ThemeStudio() {
       fontPairing: targetTheme.recommendedFont,
       cardAppearance: targetTheme.recommendedCardStyle,
       decorationStyle: targetTheme.recommendedDecor,
+      backgroundStyle: 'solid',
       customAccentColor: undefined, // Reset custom color to embrace new theme's palette
     });
   };
@@ -146,7 +153,10 @@ export function ThemeStudio() {
       </div>
 
       {/* LIVE INTERACTIVE SHOWCASE PREVIEW */}
-      <ThemeLivePreview theme={currentTheme} customization={themeCustomization} />
+      <ThemeLivePreview
+        theme={currentTheme}
+        customization={{ ...themeCustomization, themeId: activeThemeId }}
+      />
 
       {/* TAB 1: CURATED THEMES GALLERY */}
       {activeTab === 'themes' && (
@@ -164,7 +174,7 @@ export function ThemeStudio() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             {(Object.keys(THEMES) as ThemeId[]).map((tKey) => {
               const th = THEMES[tKey];
-              const isSelected = themeCustomization.themeId === tKey;
+              const isSelected = activeThemeId === tKey;
 
               return (
                 <div
