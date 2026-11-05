@@ -36,7 +36,10 @@ export function AppNavigation() {
   return (
     <>
       {/* DESKTOP SIDEBAR */}
-      <aside className="hidden md:flex w-64 shrink-0 flex-col justify-between border-r border-[var(--ag-border)] bg-[var(--ag-nav-bg)] backdrop-blur-md min-h-screen p-5 sticky top-0 h-screen select-none transition-colors duration-250">
+      <aside
+        suppressHydrationWarning
+        className="hidden md:flex w-64 shrink-0 flex-col justify-between border-r border-[var(--ag-border)] bg-[var(--ag-nav-bg)] backdrop-blur-md min-h-screen p-5 sticky top-0 h-screen select-none transition-colors duration-250"
+      >
         {/* Brand Wordmark & Flourish */}
         <div>
           <div
@@ -102,7 +105,10 @@ export function AppNavigation() {
       </aside>
 
       {/* MOBILE TOP HEADER */}
-      <header className="md:hidden sticky top-0 z-40 bg-[var(--ag-nav-bg)] backdrop-blur-md border-b border-[var(--ag-border)] px-4 py-3 flex items-center justify-between transition-colors duration-250">
+      <header
+        suppressHydrationWarning
+        className="md:hidden sticky top-0 z-40 bg-[var(--ag-nav-bg)] backdrop-blur-md border-b border-[var(--ag-border)] px-4 py-3 flex items-center justify-between transition-colors duration-250"
+      >
         <div
           onClick={() => setActiveTab('home')}
           className="flex items-center cursor-pointer"
@@ -127,6 +133,7 @@ export function AppNavigation() {
       {/* MOBILE FLOATING BOTTOM NAVIGATION (Active-Only Pill) */}
       <nav
         aria-label="Mobile Navigation"
+        suppressHydrationWarning
         className="md:hidden fixed bottom-3 left-3 right-3 z-40 bg-[var(--ag-nav-bg)]/95 backdrop-blur-md border border-[var(--ag-border)] rounded-2xl shadow-xl px-2 py-1.5 flex items-center justify-between transition-colors duration-250 select-none"
       >
         {navItems.map((item) => {

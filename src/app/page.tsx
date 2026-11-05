@@ -33,6 +33,7 @@ export default function AfterglowApp() {
 
   return (
     <div
+      suppressHydrationWarning
       className={`flex min-h-screen bg-[var(--ag-bg)] text-[var(--ag-primary-text)] antialiased transition-colors duration-250 ${
         isSidebarRight ? 'flex-col md:flex-row-reverse' : 'flex-col md:flex-row'
       }`}
